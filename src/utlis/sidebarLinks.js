@@ -21,13 +21,13 @@ export const sidebarTagsLinks = [
         name: 'Javascript',
     },
     {
-        name: 'Javascript',
+        name: 'Typescript',
     },
     {
-        name: 'Javascript',
+        name: 'C++',
     },
     {
-        name: 'Javascript',
+        name: 'Python',
     }
 ]
 

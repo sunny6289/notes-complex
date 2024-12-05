@@ -10,7 +10,7 @@ const Hero = ()=> {
     <section className="min-h-screen pt-16 sm:pt-20">
       <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12 flex flex-col items-center">
         {/* Hero Text Section */}
-        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+        <div className="text-center max-w-4xl mx-auto mb-12 sm:mb-16">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

@@ -4,7 +4,7 @@ import remarkGfm from 'remark-gfm';
 import Input from '../components/Input';
 import Button from '../components/Button';
 import CreatableSelect from 'react-select/creatable';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getDate } from '../utlis/getCreationDate';
 import { editNote } from '../store/slices/all notes/allNotesSlice';

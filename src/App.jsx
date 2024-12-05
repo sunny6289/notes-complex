@@ -1,20 +1,16 @@
-import { useState } from 'react'
 import './App.css'
 import Navigation from './components/Navigation'
-import Sidebar from './components/Sidebar'
-import SearchPanel from './components/SearchPanel'
 import AllNotesPage from './pages/AllNotesPage'
 import CreateNewNotePage from './pages/CreateNewNotePage'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import DashboardPage from './pages/DashboardPage'
-import NotesPage from './pages/AllNotesPage'
 import PageNotFound from './components/PageNotFound'
 import EditNotePage from './pages/EditNotePage'
 import ArchivedNotesPage from './pages/ArchivedNotesPage'
 import { useSelector } from 'react-redux'
 import HomePage from './pages/HomePage'
 
-function App() {
+const App = () => {
   
   const isAuth = useSelector((state)=> state.auth.isAuth);
   
@@ -37,19 +33,13 @@ function App() {
             <Route path="note" element={<AllNotesPage />} />
             <Route path="archive-note" element={<ArchivedNotesPage />} />
           </Route>
-          {/* <Route index element={<HomePage/>}/> */}
           <Route path='/create-new-note' element={<CreateNewNotePage/>}/>
           <Route path='/edit-note/:noteType/:noteId' element={<EditNotePage/>}/>
           <Route path="*" element={<PageNotFound />} />
         </Routes>
-        
-        {/* <CreateNewNotePage/> */}
-        {/* <HomePage/> */}
-        {/* <EditNote/> */}
       </div>
       </>
     }
-      
     </>
   )
 }

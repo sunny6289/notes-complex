@@ -14,9 +14,6 @@ const Note = ({ setNoteToShow, note }) => {
                         note?.noteTags?.slice(2).length > 0 &&
                         <span className='text-md text-gray-500'>{`+${note?.noteTags?.slice(2).length}`}</span>
                     }
-                    {/* <span className='p-1 rounded bg-[#1c1c1c] text-md'>React</span>
-                <span className='p-1 rounded bg-[#1c1c1c] text-md'>Dev</span> */}
-                    {/* <span className='text-md text-gray-500'>+3</span> */}
                 </div>
                 <p className='text-sm text-gray-500'>{note?.date}</p>
             </div>

@@ -2,7 +2,9 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { FcGoogle } from 'react-icons/fc';
 import { useDispatch } from 'react-redux';
-import { signIn } from '../store/slices/authentication/authSlice';
+import { userIn } from '../store/slices/authentication/authSlice';
+import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import { auth, googleProvider } from '../utlis/firebase/firebase';
 
 export default function SignInForm({ onToggleForm }) {
     const dispatch = useDispatch();
@@ -11,15 +13,31 @@ export default function SignInForm({ onToggleForm }) {
     password: '',
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    dispatch(signIn())
-    console.log('Sign in form submitted:', formData);
+    try {
+      if(formData.email.length && formData.password.length){
+        const res = await signInWithEmailAndPassword(auth, formData.email, formData.password);
+        dispatch(userIn({name: res.user.displayName, email: res.user.email}));
+      }else{
+        alert('Email and password are needed');
+      }
+    } catch (error) {
+      console.error('Error : ',error);
+      setFormData({
+        email: '',
+        password: '',
+      })
+    }
   };
 
-  const handleGoogleSignIn = () => {
-    dispatch(signIn())
-    console.log('Google sign in clicked');
+  const handleGoogleSignIn = async() => {
+    try {
+      const res = await signInWithPopup(auth, googleProvider);
+      dispatch(userIn({name: res.user.displayName, email: res.user.email, photoURL: res.user.photoURL}));
+    } catch (error) {
+      console.error('Error : ',error);
+    }
   };
 
   const handleChange = (e) => {
@@ -88,7 +106,6 @@ export default function SignInForm({ onToggleForm }) {
         <button
           type="submit"
           className="w-full py-2.5 sm:py-3 px-4 bg-accent hover:bg-blue-600 text-white rounded-lg transition-colors duration-200 font-medium text-sm sm:text-base"
-          onClick={()=>dispatch(signIn())}
         >
           Sign In
         </button>

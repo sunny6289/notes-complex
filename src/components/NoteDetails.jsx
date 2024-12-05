@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm';
-import {markdownExample} from '../utlis/testRequiredData'
 import { HiOutlineTag } from 'react-icons/hi';
 import { RxCounterClockwiseClock } from "react-icons/rx";
 import { FiEdit } from "react-icons/fi";

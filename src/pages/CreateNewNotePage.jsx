@@ -4,7 +4,6 @@ import remarkGfm from 'remark-gfm';
 import Input from '../components/Input';
 import Button from '../components/Button';
 import CreatableSelect from 'react-select/creatable';
-import { RxCross2 } from "react-icons/rx";
 import { useNavigate } from 'react-router-dom';
 import {v4 as uuidv4 } from 'uuid';
 import { useDispatch } from 'react-redux';
