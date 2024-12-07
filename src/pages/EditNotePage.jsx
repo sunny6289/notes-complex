@@ -100,12 +100,12 @@ const EditNotePage = () => {
       useEffect(()=>{
         setEditNoteDetails({
           id: noteId,
-          noteTitle: noteToEdit.noteTitle,
-          noteTags: [...noteToEdit.noteTags],
-          noteContent: noteToEdit.noteContent,
+          noteTitle: noteToEdit?.noteTitle,
+          noteTags: [...noteToEdit?.noteTags],
+          noteContent: noteToEdit?.noteContent,
           edited: true,
-          isArchived: noteToEdit.isArchived,
-          timestamp: noteToEdit.timestamp,
+          isArchived: noteToEdit?.isArchived,
+          timestamp: noteToEdit?.timestamp,
           date: getDate()})
       },[])
       const options = [
@@ -119,7 +119,7 @@ const EditNotePage = () => {
       ];
       
       const handleEditNote = ()=>{
-        if(noteToEdit.noteContent !== editNoteDetails.noteContent || checkInequalTags(noteToEdit.noteTags, editNoteDetails.noteTags) || noteToEdit.noteTitle !== editNoteDetails.noteTitle){
+        if(noteToEdit?.noteContent !== editNoteDetails.noteContent || checkInequalTags(noteToEdit?.noteTags, editNoteDetails.noteTags) || noteToEdit?.noteTitle !== editNoteDetails.noteTitle){
           if(editNoteDetails.noteContent === '' || editNoteDetails.noteTitle === ''){
             alert("Note title and Note content cannot be empty");
           }else{
