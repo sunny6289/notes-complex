@@ -5,10 +5,10 @@ import Input from '../components/Input';
 import Button from '../components/Button';
 import CreatableSelect from 'react-select/creatable';
 import { useNavigate } from 'react-router-dom';
-import {v4 as uuidv4 } from 'uuid';
 import { useDispatch } from 'react-redux';
 import { addNote } from '../store/slices/all notes/allNotesSlice';
 import { getDate } from '../utlis/getCreationDate';
+import { addNoteDB } from '../utlis/firebase/firestore db/firestoreDB';
 
 const customStyles = {
     control: (provided) => ({
@@ -84,15 +84,19 @@ const CreateNewNotePage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
     const [noteDetails, setNoteDetails] = useState({
-      id: uuidv4(),
+      edited: false,
+      isArchived: false,
       noteTitle: '',
       noteTags: [],
       noteContent: '',
-      date: getDate()
+      date: getDate(),
+      timestamp: Date.now(),
     })
 
     const handleChange = (newValue) => {
-        setNoteDetails({...noteDetails, noteTags: [...newValue]});
+      const currentTags = newValue.map((val)=> ({label: val.label, value: val.value.toLowerCase()}));
+      
+        setNoteDetails({...noteDetails, noteTags: currentTags});
       };
       
       const options = [
@@ -104,12 +108,12 @@ const CreateNewNotePage = () => {
         { value: 'node-js', label: 'Node JS' },
         { value: 'javascript', label: 'Javascript' }
       ];
-      const handleSaveNote = ()=>{
-        // Put it in DB
+      const handleSaveNote = async()=>{
         if(noteDetails.noteTitle === '' || noteDetails.noteContent === ''){
           alert("Note title and Note content cannot be empty");
         }else{
-          dispatch(addNote(noteDetails));
+          const docID = await addNoteDB(noteDetails);
+          dispatch(addNote({id:docID, ...noteDetails}));
           navigate(-1);
         }
       }

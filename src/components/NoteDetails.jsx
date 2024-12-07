@@ -6,33 +6,37 @@ import { RxCounterClockwiseClock } from "react-icons/rx";
 import { FiEdit } from "react-icons/fi";
 import { FiTrash2 } from "react-icons/fi";
 import { useDispatch } from 'react-redux';
-import { addNote, deleteNote } from '../store/slices/all notes/allNotesSlice';
+import { archiveNote, deleteNote, unarchiveNote } from '../store/slices/all notes/allNotesSlice';
 import { useNavigate } from 'react-router-dom';
 import { BiArchiveIn, BiArchiveOut } from 'react-icons/bi';
-import { archiveNote, removeArchivedNote } from '../store/slices/archived notes/archivedNotesSlice';
+import { deleteNoteDB, updateNoteDB } from '../utlis/firebase/firestore db/firestoreDB';
 
-const NoteDetails = ({noteType, noteToShow}) => {
-    // console.log(noteToShow);
+const NoteDetails = ({noteToShow}) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const archiveCurrentNote = ()=>{
+    const archiveCurrentNote = async()=>{
+        await updateNoteDB(noteToShow.id, {...noteToShow, isArchived: true});
         dispatch(archiveNote(noteToShow));
-        removeNote();
     }
-    const unarchveCurrentNote = ()=>{
-        dispatch(removeArchivedNote(noteToShow.id));
-        dispatch(addNote(noteToShow));
+    const unarchiveCurrentNote = async()=>{
+        try {
+            await updateNoteDB(noteToShow.id, {...noteToShow, isArchived: false});
+            dispatch(unarchiveNote(noteToShow));
+          } catch (error) {
+            console.error("Error unarchiving note:", error.message);
+          }
     }
-    const removeNote = ()=>{
-        if(noteType === 'all-note'){
-            dispatch(deleteNote(noteToShow.id))
-        }else{
-            dispatch(removeArchivedNote(noteToShow.id))
-        }
+    const removeNote = async()=>{
+        try {
+              await deleteNoteDB(noteToShow.id);
+              dispatch(deleteNote(noteToShow.id));
+          } catch (error) {
+            console.error("Error deleting note:", error.message);
+          }
     }
     const editNote = ()=>{
-        navigate(`/edit-note/${noteType}/${noteToShow.id}`);
+        navigate(`/edit-note/${noteToShow.isArchived ? 'archive-note' : 'all-note'}/${noteToShow.id}`);
     }
     return (
         <div className='w-full h-[calc(100vh-120px)] p-4 divide-y-2 divide-zinc-800 primary-text'>
@@ -43,7 +47,7 @@ const NoteDetails = ({noteType, noteToShow}) => {
                         <div className='flex items-center justify-between'>
                             <h1 className='font-bold text-2xl'>{noteToShow?.noteTitle}</h1>
                             <div className='flex items-center gap-2'>
-                                <div className='flex items-center gap-1 p-1 text-xs bg-gray-700 font-semibold rounded select-none cursor-pointer active:scale-95' onClick={noteType==='all-note'? archiveCurrentNote : unarchveCurrentNote}>{noteType === 'all-note'? <BiArchiveIn/> : <BiArchiveOut/>}<span>{noteType === 'all-note' ? 'Archive' : 'Unarchive'}</span></div>
+                                <div className='flex items-center gap-1 p-1 text-xs bg-gray-700 font-semibold rounded select-none cursor-pointer active:scale-95' onClick={ !noteToShow.isArchived ? archiveCurrentNote : unarchiveCurrentNote}>{ !noteToShow.isArchived ? <BiArchiveIn/> : <BiArchiveOut/>}<span>{ !noteToShow.isArchived ? 'Archive' : 'Unarchive'}</span></div>
                                 <div className='flex items-center gap-1 p-1 text-xs bg-yellow-700 font-semibold rounded select-none cursor-pointer active:scale-95' onClick={editNote}><FiEdit/><span>Edit</span></div>
                                 <div className='flex items-center gap-1 p-1 text-xs bg-red-700 font-semibold rounded select-none cursor-pointer active:scale-95' onClick={removeNote}><FiTrash2/><span>Delete</span></div>
                             </div>

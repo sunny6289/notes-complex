@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getDate } from '../utlis/getCreationDate';
 import { editNote } from '../store/slices/all notes/allNotesSlice';
 import { checkInequalTags } from '../utlis/checkInequalTags';
-import { editArchivedNote } from '../store/slices/archived notes/archivedNotesSlice';
+import { updateNoteDB } from '../utlis/firebase/firestore db/firestoreDB';
 
 
 const customStyles = {
@@ -89,52 +89,42 @@ const EditNotePage = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const {noteId} = useParams();
-    const {noteType} = useParams();
-    let noteToEdit = null;
-
-    if(noteType === 'all-note'){
-      const allNoteList = useSelector((state)=>state.allNote.allNoteList);
-      const [note] = allNoteList.filter((note)=> note.id === noteId);
-      noteToEdit = note;
-    }else{
-      const archivedNoteList = useSelector((state)=>state.archivedNote.archivedNoteList);
-      const [note] = archivedNoteList.filter((note)=> note.id === noteId);
-      noteToEdit = note
-    }
-    
+    const allNoteList = useSelector((state)=>state.allNote.allNoteList);
+    const [noteToEdit,setNoteToEdit] = useState(...allNoteList.filter((note)=> note.id === noteId))
     const [editNoteDetails, setEditNoteDetails] = useState({})
     
     const handleChange = (newValue) => {
-        setEditNoteDetails({...editNoteDetails, noteTags: newValue})
+        const currentTags = newValue.map((val)=> ({label: val.label, value: val.value.toLowerCase()}));
+        setEditNoteDetails({...editNoteDetails, noteTags: currentTags})
       };
       useEffect(()=>{
-        setEditNoteDetails({id: noteId,
+        setEditNoteDetails({
+          id: noteId,
           noteTitle: noteToEdit.noteTitle,
           noteTags: [...noteToEdit.noteTags],
           noteContent: noteToEdit.noteContent,
+          edited: true,
+          isArchived: noteToEdit.isArchived,
+          timestamp: noteToEdit.timestamp,
           date: getDate()})
       },[])
       const options = [
         { value: 'cooking', label: 'Cooking' },
         { value: 'health', label: 'Health' },
         { value: 'recipes', label: 'Recipes' },
-        { value: 'dev', label: 'Dev' },
-        { value: 'react-js', label: 'React JS' },
-        { value: 'node-js', label: 'Node JS' },
-        { value: 'javascript', label: 'Javascript' }
+        { value: 'study', label: 'Study' },
+        { value: 'exercise', label: 'Exercise' },
+        { value: 'tour', label: 'Tour' },
+        { value: 'grocery', label: 'Grocery' }
       ];
       
       const handleEditNote = ()=>{
-        // Put it in DB
         if(noteToEdit.noteContent !== editNoteDetails.noteContent || checkInequalTags(noteToEdit.noteTags, editNoteDetails.noteTags) || noteToEdit.noteTitle !== editNoteDetails.noteTitle){
           if(editNoteDetails.noteContent === '' || editNoteDetails.noteTitle === ''){
             alert("Note title and Note content cannot be empty");
           }else{
-            if(noteType === 'all-note'){
-              dispatch(editNote(editNoteDetails));
-            }else{
-              dispatch(editArchivedNote(editNoteDetails));
-            }
+            updateNoteDB(noteId, editNoteDetails);
+            dispatch(editNote(editNoteDetails));
             navigate(-1);
           } 
         }else{

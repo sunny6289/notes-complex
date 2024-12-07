@@ -5,17 +5,18 @@ import NotesList from '../components/NotesList';
 import { useSelector } from 'react-redux';
 
 const ArchivedNotesPage = () => {
-    const archiveNoteList = useSelector((state)=> state.archivedNote.archivedNoteList);
-    const [filteredNoteList, setFilteredNoteList] = useState(archiveNoteList)
+    const allNoteList = useSelector((state)=> state.allNote.allNoteList);
+    const archivedNotes = allNoteList.filter((note)=> note.isArchived === true)
+    const [filteredNoteList, setFilteredNoteList] = useState(archivedNotes)
     const [noteToShow, setNoteToShow] = useState(filteredNoteList.length === 0 ? null : filteredNoteList[0]);
     const [searchText, setSearchText] = useState('');
     useEffect(()=>{
         if(searchText !== ''){
-            setFilteredNoteList(archiveNoteList.filter((note)=>note.noteTitle.toLowerCase().includes(searchText)))
+            setFilteredNoteList(archivedNotes.filter((note)=>note.noteTitle.toLowerCase().includes(searchText)))
         }else{
-            setFilteredNoteList(archiveNoteList);
+            setFilteredNoteList(archivedNotes);
         }
-    },[searchText, archiveNoteList])
+    },[searchText, allNoteList])
     useEffect(()=>{
         setNoteToShow(filteredNoteList.length === 0 ? null : filteredNoteList[0])
     },[filteredNoteList])

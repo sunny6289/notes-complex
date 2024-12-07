@@ -5,15 +5,16 @@ import SearchPanel from '../components/SearchPanel';
 import { useSelector } from 'react-redux';
 
 const AllNotesPage = () => {
-    const allNoteList = useSelector((state)=> state.allNote.allNoteList)
-    const [filteredNoteList, setFilteredNoteList] = useState(allNoteList)
+    const allNoteList = useSelector((state)=> state.allNote.allNoteList);
+    const unarchivedNotes = allNoteList.filter((note)=> note.isArchived === false)
+    const [filteredNoteList, setFilteredNoteList] = useState(unarchivedNotes)
     const [noteToShow, setNoteToShow] = useState(filteredNoteList.length === 0 ? null : filteredNoteList[0]);
     const [searchText, setSearchText] = useState('');
     useEffect(()=>{
         if(searchText !== ''){
-            setFilteredNoteList(allNoteList.filter((note)=>note.noteTitle.toLowerCase().includes(searchText)))
+            setFilteredNoteList(unarchivedNotes.filter((note)=>note.noteTitle.toLowerCase().includes(searchText)))
         }else{
-            setFilteredNoteList(allNoteList);
+            setFilteredNoteList(unarchivedNotes);
         }
     },[searchText, allNoteList])
     useEffect(()=>{
