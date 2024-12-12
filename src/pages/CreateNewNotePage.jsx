@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm';
 import Input from '../components/Input';
@@ -24,7 +24,7 @@ const customStyles = {
       '&:hover': {
         borderColor: '#27272a', // Tailwind hover focus
       },
-      maxHeight: '100px',
+      maxHeight: '60px',
       overflowY: 'auto',
             // Applying custom scrollbar styles
             '::-webkit-scrollbar': {
@@ -83,6 +83,8 @@ const customStyles = {
 const CreateNewNotePage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [largeScreen, setLargeScreen] = useState(true);
+  const [showEditor, setShowEditor] = useState(true);
     const [noteDetails, setNoteDetails] = useState({
       edited: false,
       isArchived: false,
@@ -98,6 +100,12 @@ const CreateNewNotePage = () => {
       
         setNoteDetails({...noteDetails, noteTags: currentTags});
       };
+
+      useEffect(()=>{
+        if(window.innerWidth<=640){
+          setLargeScreen(false);
+        }
+      },[])
       
       const options = [
         { value: 'cooking', label: 'Cooking' },
@@ -117,32 +125,67 @@ const CreateNewNotePage = () => {
           navigate(-1);
         }
       }
-    return (
-        <>
-            <div className="note-editor  h-[calc(100vh-64px)] sticky top-[64px] left-0 w-1/2  bg-[#1c1c1c] flex flex-col items-end gap-3 p-3">
-            <Input placeholder={'Add a title'} addedStyle={'p-3 text-[#9CA3AF] w-full text-lg outline-none focus:border-2 focus:border-[#3b83f6d0]'} onChange={(e)=>setNoteDetails({...noteDetails, noteTitle: e.target.value})}/>
-                <CreatableSelect
-                    className="w-full transition-all"
-                    classNamePrefix="custom-scrollbar"
-                    styles={customStyles}
-                    isMulti
-                    isClearable
-                    value={noteDetails.noteTags}
-                    onChange={handleChange}
-                    options={options}
-                    placeholder="Add tags"
-                />
-                <textarea rows={18} value={noteDetails.noteContent} onChange={(e) => setNoteDetails({...noteDetails, noteContent: e.target.value})} className='w-full bg-black border-2 border-zinc-800 rounded-md text-white p-2 text-lg outline-none custom-scrollbar focus:border-[#3b83f6d0]' />
-                <div className='flex items-center gap-3'>
-                    <Button style={'max-w-fit px-4 py-2 bg-gray-500 rounded text-white transition-all hover:bg-gray-600'} onClick={()=>navigate(-1)} content={'Cancel'} />
-                    <Button style={'primary-btn max-w-fit px-5 py-2 '} content={'Save'} onClick={handleSaveNote}/>
-                </div>
+       if(largeScreen){
+        return (
+          <>
+              <div className="note-editor  h-[calc(100vh-64px)] sticky top-[64px] left-0 w-1/2  bg-[#1c1c1c] flex flex-col items-end gap-3 p-3">
+              <Input placeholder={'Add a title'} addedStyle={'p-3 text-[#9CA3AF] w-full text-lg outline-none focus:border-2 focus:border-[#3b83f6d0]'} onChange={(e)=>setNoteDetails({...noteDetails, noteTitle: e.target.value})}/>
+                  <CreatableSelect
+                      className="w-full transition-all"
+                      classNamePrefix="custom-scrollbar"
+                      styles={customStyles}
+                      isMulti
+                      isClearable
+                      value={noteDetails.noteTags}
+                      onChange={handleChange}
+                      options={options}
+                      placeholder="Add tags"
+                  />
+                  <textarea rows={18} value={noteDetails.noteContent} onChange={(e) => setNoteDetails({...noteDetails, noteContent: e.target.value})} className='w-full bg-black border-2 border-zinc-800 rounded-md text-white p-2 text-lg outline-none custom-scrollbar focus:border-[#3b83f6d0]' />
+                  <div className='flex items-center gap-3'>
+                      <Button style={'max-w-fit px-4 py-2 bg-gray-500 rounded text-white transition-all hover:bg-gray-600'} onClick={()=>navigate(-1)} content={'Cancel'} />
+                      <Button style={'primary-btn max-w-fit px-5 py-2 '} content={'Save'} onClick={handleSaveNote}/>
+                  </div>
+              </div>
+              <div className="note-preview markdown-style primary-text p-3 w-1/2 bg-[#000] overflow-y-auto">
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>{noteDetails.noteContent}</ReactMarkdown>
+              </div>
+          </>
+      ) 
+       }else{
+        return (
+          <div className='w-full h-[calc(100vh-64px)] flex flex-col bg-[#1c1c1c] p-2'>
+            <div className='min-w-screen flex items-center bg-black rounded-2xl p-2 sticky top-0 z-50'>
+              <span className={`text-center text-white transition-all w-1/2 rounded-xl ${showEditor && 'bg-slate-700 p-1'}`} onClick={()=>setShowEditor(true)} >Editor</span>
+              <span className={`text-center text-white transition-all w-1/2 rounded-xl ${!showEditor && 'bg-slate-700 p-1'}`} onClick={()=>setShowEditor(false)} >Preview</span>
             </div>
-            <div className="note-preview markdown-style primary-text p-3 w-1/2 bg-[#000] overflow-y-auto">
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>{noteDetails.noteContent}</ReactMarkdown>
-            </div>
-        </>
-    );
+
+              <div className={`note-editor min-h-[calc(100vh-64px)] sticky top-[64px] left-0 min-w-screen ${!showEditor && 'hidden'} bg-[#1c1c1c] flex flex-col items-end pt-3 gap-3`}>
+              <Input placeholder={'Add a title'} addedStyle={'p-3 text-[#9CA3AF] w-full text-lg outline-none focus:border-2 focus:border-[#3b83f6d0]'} onChange={(e)=>setNoteDetails({...noteDetails, noteTitle: e.target.value})}/>
+                  <CreatableSelect
+                      className="w-full transition-all"
+                      classNamePrefix="custom-scrollbar"
+                      styles={customStyles}
+                      isMulti
+                      isClearable
+                      value={noteDetails.noteTags}
+                      onChange={handleChange}
+                      options={options}
+                      placeholder="Add tags"
+                  />
+                  <textarea rows={18} value={noteDetails.noteContent} onChange={(e) => setNoteDetails({...noteDetails, noteContent: e.target.value})} className='w-full bg-black border-2 border-zinc-800 rounded-md text-white p-2 text-lg outline-none custom-scrollbar focus:border-[#3b83f6d0]' />
+                  <div className='flex flex-wrap-reverse items-center gap-3'>
+                      <Button style={'max-w-fit px-6 py-2 bg-gray-500 rounded text-white transition-all hover:bg-gray-600'} onClick={()=>navigate(-1)} content={'Cancel'} />
+                      <Button style={'primary-btn max-w-fit px-6 py-2 '} content={'Save'} onClick={handleSaveNote}/>
+                  </div>
+              </div>
+              <div className={`note-preview markdown-style primary-text h-[calc(100vh-64px)] mt-3 p-3 min-w-screen ${showEditor && 'hidden'} bg-[#000] overflow-y-auto`}>
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>{noteDetails.noteContent}</ReactMarkdown>
+              </div>
+          </div>
+      ) 
+       }
+    
 }
 
 export default CreateNewNotePage;
