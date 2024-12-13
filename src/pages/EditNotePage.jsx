@@ -100,7 +100,7 @@ const EditNotePage = () => {
         setEditNoteDetails({...editNoteDetails, noteTags: currentTags})
       };
       useEffect(()=>{
-        if(window.innerWidth<=640){
+        if(window.innerWidth<= 768){
           setLargeScreen(false);
         }
         setEditNoteDetails({

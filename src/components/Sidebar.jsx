@@ -9,7 +9,7 @@ const Sidebar = () => {
     const navigate = useNavigate();
 
     return (
-        <div className='hidden h-[calc(100vh-64px)] sm:min-w-[280px] sticky left-0 top-[64px] bg-black sm:flex flex-col items-center primary-text divide-y-2 divide-zinc-900 p-3 border-r-2 border-zinc-800'>
+        <div className='hidden h-[calc(100vh-64px)] md:min-w-[280px] sticky left-0 top-[64px] bg-black md:flex flex-col items-center primary-text divide-y-2 divide-zinc-900 p-3 border-r-2 border-zinc-800'>
             <div className="sidebar-first-section w-full p-3 flex flex-col items-center gap-2">
                 <div className=" w-full flex items-center p-3 rounded-md justify-center gap-3 bg-[#3b82f6] select-none cursor-pointer transition-all hover:bg-[#1b68e4]" 
                 onClick={()=>navigate('/create-new-note')}>

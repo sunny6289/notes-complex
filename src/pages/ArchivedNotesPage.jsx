@@ -24,7 +24,7 @@ const ArchivedNotesPage = () => {
     },[filteredNoteList])
 
     useEffect(()=>{
-        if(window.innerWidth <= 640){
+        if(window.innerWidth <= 768){
             setLargeScreen(false);
         }
     },[])

@@ -55,14 +55,14 @@ const NoteDetails = ({ noteToShow, setShowNote }) => {
 
 
     useEffect(() => {
-        if (window.innerWidth <= 640) {
+        if (window.innerWidth <= 768) {
             setLargeScreen(false)
         }
     }, [])
 
     if (largeScreen) {
         return (
-            <div className='w-full overflow-x-auto min-h-[calc(100vh-176px)] sm:min-h-[calc(100vh-120px)] custom-scrollbar p-4 divide-y-2 divide-zinc-800 primary-text'>
+            <div className='w-full overflow-x-auto min-h-[calc(100vh-176px)] md:min-h-[calc(100vh-120px)] custom-scrollbar p-4 divide-y-2 divide-zinc-800 primary-text'>
                 {
                     noteToShow ?
                         <>
@@ -111,7 +111,7 @@ const NoteDetails = ({ noteToShow, setShowNote }) => {
                             </div>
                         </> :
                         <div className='w-full h-full flex items-center justify-center'>
-                            <h1 className='text-center font-medium text-4xl sm:text-6xl'>There are no notes</h1>
+                            <h1 className='text-center font-medium text-4xl md:text-6xl'>There are no notes</h1>
                         </div>
                 }
 
@@ -119,7 +119,7 @@ const NoteDetails = ({ noteToShow, setShowNote }) => {
         );
     } else {
         return (
-            <div className='relative overflow-y-hidden w-full min-h-[calc(100vh-176px)] sm:min-h-[calc(100vh-120px)] custom-scrollbar p-4 divide-y-2 divide-zinc-800 primary-text'>
+            <div className='relative overflow-y-hidden w-full min-h-[calc(100vh-176px)] md:min-h-[calc(100vh-120px)] custom-scrollbar p-4 divide-y-2 divide-zinc-800 primary-text'>
                 {
                     noteToShow ?
                         <>
@@ -174,7 +174,7 @@ const NoteDetails = ({ noteToShow, setShowNote }) => {
                             </div>
                         </> :
                         <div className='w-full h-full flex items-center justify-center'>
-                            <h1 className='text-center font-medium text-4xl sm:text-6xl'>There are no notes</h1>
+                            <h1 className='text-center font-medium text-4xl md:text-6xl'>There are no notes</h1>
                         </div>
                 }
 
