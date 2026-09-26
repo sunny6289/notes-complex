@@ -111,7 +111,7 @@ const NoteDetails = ({ noteToShow, setShowNote }) => {
                             </div>
                         </> :
                         <div className='w-full h-full flex items-center justify-center'>
-                            <h1 className='text-center font-medium text-4xl md:text-6xl'>There are no notes</h1>
+                            <h1 className='text-center font-semibold text-4xl md:text-6xl'>No notes available</h1>
                         </div>
                 }
 

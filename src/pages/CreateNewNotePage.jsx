@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm';
 import Input from '../components/Input';
@@ -180,7 +180,8 @@ const CreateNewNotePage = () => {
                   </div>
               </div>
               <div className={`note-preview markdown-style primary-text h-[calc(100vh-64px)] mt-3 p-3 min-w-screen ${showEditor && 'hidden'} bg-[#000] overflow-y-auto`}>
-                  <ReactMarkdown remarkPlugins={[remarkGfm]}>{noteDetails.noteContent}</ReactMarkdown>
+                 <ReactMarkdown remarkPlugins={[remarkGfm]}>{noteDetails.noteContent}
+                 </ReactMarkdown>
               </div>
           </div>
       ) 

@@ -1,10 +1,8 @@
 import { motion } from 'framer-motion';
 import AuthForm from './AuthForm';
+import guestSignup from '../utlis/guestSignup';
 
 const Hero = ()=> {
-  const scrollToSignUp = () => {
-    document.getElementById('signup-form').scrollIntoView({ behavior: 'smooth' });
-  };
 
   return (
     <section className="min-h-screen pt-16 sm:pt-20">
@@ -32,17 +30,19 @@ const Hero = ()=> {
             Simple, fast, and beautiful note-taking for modern thinkers.
           </motion.p>
 
+        
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
             className="px-4"
           >
-            <button 
-              onClick={scrollToSignUp}
+            <button
+              onClick={() => guestSignup()}
               className="px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg bg-accent text-white hover:bg-blue-600 transition-colors text-base sm:text-lg w-full sm:w-auto"
             >
-              Sign Up Now
+              Continue as guest
             </button>
           </motion.div>
         </div>

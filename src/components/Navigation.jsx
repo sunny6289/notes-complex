@@ -1,19 +1,15 @@
-import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { signOut } from 'firebase/auth';
 import { auth } from '../utlis/firebase/firebase';
 import { userOut } from '../store/slices/authentication/authSlice';
 import { GiOakLeaf } from "react-icons/gi";
-import { CiSettings } from 'react-icons/ci';
-import { MdAccountCircle } from "react-icons/md";
-import { FaPowerOff } from "react-icons/fa6";
+import { MdLogout } from "react-icons/md";
 
 
 const Navigation = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [openAccount, setOpenAccount] = useState(false);
     const signOutUser = async()=>{
         try {
             await signOut(auth);
@@ -29,17 +25,13 @@ const Navigation = () => {
                 <GiOakLeaf className='text-blue-500 text-3xl md:text-4xl'/>
                 <h1 className='primary-text text-2xl md:text-3xl logo'>Notes</h1>
             </div>
-            <MdAccountCircle onClick={()=>setOpenAccount(!openAccount)} className='primary-text text-3xl cursor-pointer'/>
-            {
-                openAccount && (
-                <div className='absolute right-2 md:right-12 -bottom-[58px] bg-[#1c1c1c] rounded-md py-3 flex flex-col items-center select-none z-[60]'>
-                    {/* <div className='secondary-text text-md flex items-center gap-3 py-3 px-5 cursor-pointer transition-all hover:bg-[#363636]'><CiSettings/><span>Settings</span></div> */}
-                    <div className='text-red-500 text-md flex items-center gap-3 py-3 px-5 cursor-pointer transition-all hover:bg-[#363636]'
-                    onClick={signOutUser}
-                    ><FaPowerOff/><span>Sign out</span></div>
-                </div>)
-            }
-            
+            <button
+                type='button'
+                onClick={signOutUser}
+                className='flex items-center gap-2 rounded-md border border-zinc-700 px-3 py-2 text-white hover:bg-zinc-900'
+            >
+                Sign out <MdLogout />
+            </button>
         </nav>
     );
 }

@@ -1,9 +1,6 @@
-import React from 'react';
 import { IoAddOutline, IoArchiveOutline } from "react-icons/io5";
 import { MdOutlineNotes } from "react-icons/md";
-// import { sidebarTagsLinks } from '../utlis/sidebarLinks';
-// import { HiOutlineTag } from "react-icons/hi";
-import { Link, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 const Sidebar = () => {
     const navigate = useNavigate();
@@ -16,24 +13,15 @@ const Sidebar = () => {
                     <IoAddOutline/>
                     <span>Create new note</span>
                 </div>
-                <Link to={'/note'} className="sidebar-items">
+                <NavLink to={'/note'} className={({ isActive }) => `sidebar-items ${isActive ? ' bg-neutral-700' : ''}`}>
                     <MdOutlineNotes/>
                     <span>All notes</span>
-                </Link>
-                <Link to={'/archive-note'} className="sidebar-items">
+                </NavLink>
+                <NavLink to={'/archive-note'} className={({ isActive }) => `sidebar-items ${isActive ? ' bg-neutral-700' : ''}`}>
                     <IoArchiveOutline/>
                     <span>Archived notes</span>
-                </Link>
+                </NavLink>
             </div>
-            {/* <div className="sidebar-second-section w-full p-3 flex flex-col items-center gap-2 overflow-hidden transition-all custom-scrollbar hover:overflow-y-auto">
-                {
-                    sidebarTagsLinks.map((tags, idx)=>(
-                    <div key={idx} className='sidebar-items'>
-                        <HiOutlineTag/>
-                        <span>{tags.name}</span>
-                    </div>))
-                }
-            </div> */}
         </div>
     );
 }
