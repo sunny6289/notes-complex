@@ -83,6 +83,7 @@ const customStyles = {
 const CreateNewNotePage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const [largeScreen, setLargeScreen] = useState(true);
   const [showEditor, setShowEditor] = useState(true);
     const [noteDetails, setNoteDetails] = useState({
@@ -90,7 +91,18 @@ const CreateNewNotePage = () => {
       isArchived: false,
       noteTitle: '',
       noteTags: [],
-      noteContent: '',
+      noteContent: `# Heading 1
+## Heading 2
+
+**Bold text** and *italic text*
+~~Strikethrough text~~
+
+- Make a list
+- Add another item
+
+> Add a quote
+
+[Add a link](https://example.com)`,
       date: getDate(),
       timestamp: Date.now(),
     })
@@ -148,7 +160,9 @@ const CreateNewNotePage = () => {
                   </div>
               </div>
               <div className="note-preview markdown-style primary-text p-3 w-1/2 bg-[#000] overflow-y-auto">
-                  <ReactMarkdown remarkPlugins={[remarkGfm]}>{noteDetails.noteContent}</ReactMarkdown>
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                    {noteDetails.noteContent}
+                  </ReactMarkdown>
               </div>
           </>
       ) 
@@ -179,9 +193,11 @@ const CreateNewNotePage = () => {
                       <Button style={'primary-btn max-w-fit px-6 py-2 '} content={'Save'} onClick={handleSaveNote}/>
                   </div>
               </div>
+              
               <div className={`note-preview markdown-style primary-text h-[calc(100vh-64px)] mt-3 p-3 min-w-screen ${showEditor && 'hidden'} bg-[#000] overflow-y-auto`}>
-                 <ReactMarkdown remarkPlugins={[remarkGfm]}>{noteDetails.noteContent}
-                 </ReactMarkdown>
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                   {noteDetails.noteContent}
+                  </ReactMarkdown>
               </div>
           </div>
       ) 
